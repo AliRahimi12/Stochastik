@@ -1,0 +1,644 @@
+---
+title: "Blinder Würfel"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+Autor: "Ali Abdorrahimi"\
+Studiengang: "Digital Engineering"\
+Fach: "Stochastik "\
+Semester : "Wintersemester 2022 "\
+
+# Projektbericht
+
+![Blinder Würfel](/Stochastic/BlinderWürfel.jpg )
+
+Ein „Blinder Würfel“ hatte im Mittelalter nach die Gestalt eines gewöhnlichen Würfels, aber auf fünf Seiten trug er keine Augenzahl. Auf der sechsten Seitenfläche hatte der erste Blinde Würfel ein Auge, der zweite blinde Würfel eine 2 bis wir beim sechsten Blinden Würfel angekommen sind, der
+auf einer Seitenfläche eine 6 trägt. Alle Seitenflächen sollen mit der gleichen Wahrscheinlichkeit fallen.
+
+
+
+
+# Load Libraries
+```{r,  warning=FALSE,include= TRUE,echo=TRUE,results='hide', message=FALSE}
+
+library(psych)
+library(modeest)
+library(ggplot2)
+
+```   
+ 
+# Mögliches Ergebnis bei Y
+
+Wir würfeln immer mit diesen sechs blinden Würfeln, die Augenzahlen nennen
+wir X1, X2, X3, X4, X5 und X6. 
+
+Wir sind an der Summe der Augen unserer sechs Würfel, also an der Zufallsvariable 
+$Y = X1 + X2 + X3 + X4 + X5 + X6$, interessiert. 
+ Dabei gehen wir davon aus,dass die geworfenen Augensummen der sechs blinden Würfel stochastisch unabhängig sind. 
+
+Bei der Bildung der Augensumme X der sechs Würfel werden  die leeren Seitenflächen mit 0 bewertet.
+
+Zum Beispiel ist das mögliche Ergebnis für die Augensumme 3, wenn fünf Würfel auf eine Leerstelle und ein Würfel auf 3 treffen würden.
+
+
+$Augensumme X_i \hspace{20pt} Zugehörige Ergebniss$ 
+                 
+$0$      
+
+$1\hspace{100pt}1$
+
+$2\hspace{100pt}2$  
+
+$3\hspace{100pt}3$
+$\quad2,1$  
+
+$4\hspace{100pt}4$
+$\quad1,3$
+
+$5\hspace{100pt}5$
+$\quad1,4$
+$\quad2,3$
+
+
+$6\hspace{100pt}6$
+$\quad1,5$
+$\quad4,2$
+$\quad1,2,3$
+
+$7\hspace{100pt}7$
+$\quad2,5$
+$\quad4,3$
+$\quad1,6$
+$\quad1,2,4$
+
+$8\hspace{100pt}8$
+$\quad5,3$
+$\quad2,6$
+$\quad1,3,4$
+$\quad1,2,5$
+
+$9\hspace{100pt}9$
+$\quad6,3$
+$\quad4,5$
+$\quad1,2,6$
+$\quad1,3,5$
+$\quad2,3,4$
+
+$10\hspace{95pt}10$
+$\quad4,6$
+$\quad1,3,6$
+$\quad1,4,5$
+$\quad2,3,5$
+$\quad1,2,3,4$
+
+$11\hspace{95pt}11$
+$\quad5,6$
+$\quad1,4,6$
+$\quad2,3,6$
+$\quad2,4,5$
+$\quad1,2,3,5$
+
+$12\hspace{95pt}12$
+$\quad1,5,6$
+$\quad2,4,6$
+$\quad3,4,5$
+$\quad1,2,3,6$
+$\quad1,2,4,5$
+
+$13\hspace{95pt}13$
+$\quad2,5,6$
+$\quad3,4,6$
+$\quad1,2,4,6$
+$\quad1,3,4,5$
+
+$14\hspace{95pt}14$
+$\quad3,5,6$
+$\quad1,2,5,6$
+$\quad1,3,4,6$
+$\quad2,3,4,5$
+
+$15\hspace{95pt}15$
+$\quad4,5,6$
+$\quad1,3,5,6$
+$\quad2,3,4,6$
+$\quad1,2,3,4,5$
+
+$16\hspace{95pt}16$
+$\quad1,4,5,6$
+$\quad2,3,5,6$
+$\quad1,2,3,4,6$
+
+$17\hspace{95pt}17$
+$\quad2,4,5,6$
+$\quad1,2,3,5,6$
+
+$18\hspace{95pt}18$
+$\quad3,4,5,6$
+$\quad1,2,4,5,6$
+
+$19\hspace{95pt}19$
+$\quad1,3,4,5,6$
+
+$20\hspace{95pt}20$
+$\quad2,3,4,5,6$
+
+$21\hspace{95pt}21$
+$\quad1,2,3,4,5,6$
+
+
+Das Ergebnis wäre Null, wenn alle sechs Würfel auf eine leere Seitenfläche kommen würden,die Werte 1 und 2 werden durch 
+1 = 1+0+0+0+0+0 und  2 = 2+0+0+0+0+0 erzielt.
+Die Summe 3 gehört zu 1+2+0+0+0+0 , es gilt 4 =1+0+3+0+0+0 .
+Bis 21 können die andere Summe auch erzielt werden.
+
+Das maximale Ergebnis wäre 21, wenn man nacheinander sechs, fünf, vier, drei, zwei, eins würfelt.
+
+
+Die Auswertung zeigt, dass es insgesamt 22 mögliche Ergebnisse für Y gibt, nämlich einen Wertebereich zwischen 0 und 21. 
+
+
+
+
+
+
+# Erwartungswert 
+
+Der Erwartungswert hängt nicht von den speziellen Eigenschaften der Elementarereignisse, sondern von der Dichte der Zufallsvariable P(X=x_i) ab. Nimmt die Zufallsvariable X jeden der n Werte xi=X(w_i) mit der gleichen Wahrscheinlichkeit 1/n an , dann ist der Erwartungswert:
+\[ \mu= \frac{1}{n} (x_1+..+x_n)\]
+
+Wir verwenden bei der Berechnung der Formel
+\[ E(Y)=E(x_1+x_2+x_3+x_4+x_5+x_6)\]
+Das heißt, der Erwartungswert der Summe dieser Variablen ist gleich der Summe der Erwartungswerte der einzelnen Variablen.
+
+
+Wir berechnen die einzelnen Erwartungswerte:
+
+\[E(Xi)=0*( \frac{5}{6}) +i( \frac{1}{6}) \]
+
+\[E(X1)= (1/6*1)+(5/6*0) = 1/6\]
+\[E(X2)= (1/6*2)+(5/6*0) = 1/3\]
+\[E(X3)= (1/6*3)+(5/6*0) = 1/2\]
+\[E(X4)= (1/6*4)+(5/6*0) = 2/3\]
+\[E(X5)= (1/6*5)+(5/6*0) = 5/6\]
+\[E(X6)= (1/6*6)+(5/6*0) = 1\]
+
+ingesamt berechnen wir:
+\[E(x)=E(x1+x2x+x3+x4+x5x+x6)=E(x1)+E(x2)+E(x3)+E(x4)+E(x5)+E(x6)  \]
+\[E(x)=\frac{1}{6} (1+2+3+4+5+6) = 3.5\]
+
+
+
+
+# Varianz  
+
+Weil die sechs Blinden Würfel unkorreliert(unabhängig) sind, können wir diese Formel  \[Var(x1+x2x+x3+x4+x5x+x6)=Var(x1)+Var(x2)+Var(x3)+Var(x4)+Var(x5)+Var(x6)\] 
+
+verwenden.
+
+\[\hspace{35pt}Var(X1)=(1-(1/6))^2*((1/6))+ (0-(1/6))^2.(1/6)=0.138 \] 
+
+\[\hspace{35pt}Var(X2)=(2-(1/3))^2*((1/6))+ (0-(1/3))^2.(5/6)=0.555 \] 
+ 
+\[\hspace{30pt}Var(X3)=(3-(1/2))^2*((1/6))+(0-(1/2))^2.(5/6)=1.25  \]  
+ 
+\[\hspace{30pt}Var(X4)=(4-(2/3))^2*((1/6))+(0-(2/3))^2.(5/6)=2.22  \]  
+
+\[\hspace{41pt}Var(X5)=(5-(5/6))^2*((1/6))+(0-(5/6))^2.(5/6)=3.4722\] 
+
+\[\hspace{47pt}Var(X6)=(6-1)^2*((1/6))+(0-1)^2.(5/6)=36*Var(X1)=5\] 
+
+
+\[Var(Y)= 0.138+0.555+1.25+2.22+3.4722= 12.638\]
+
+Die Varianz beträgt nach der Berechnung : 12.638
+
+
+
+
+# Standardabweichung
+
+
+
+Die Quadratwurzel der Varianz ist das als Standardabweichung bezeichnete wichtigste Streuungsmaß in der Stochastik.
+\[\sigma =\sqrt{Var(Y)}=3,5613199                                \]
+
+
+
+
+# Vergleichen mit faire Würfeln
+
+**Erwartungswert** 
+
+\[E(x)=\frac{1}{6}(1+2+3+4+5+6) = 3.5\]
+
+Es gibt sechs Möglichkeiten wie das Ergebnis von einem Würfelwurf ausgehen kann und alle sind gleichwahrscheinlich. Die Wahrscheinlichkeit eine 1 zu würfeln beträgt 1/6 und dies gilt für alle Zahlen von 1 bis 6. Damit erhalten wir den Erwartungswert von 3,5.
+
+Der Erwartungswert von Blinder und faire Würfel gleich sind. 
+
+
+**Varianz**
+
+Ist X eine Zufallsvariable mit dem \[ Erwartungswert \quad\mu \] ,dann ist Varianz \[\sigma^2\] von X gegeben durch:
+
+\[\sigma^2 =\ Var(X) = E((X-u)^2)\]
+  
+\[E((X-u)^2) = \frac{1}{6}( (1-3.5)^2 +(2-3.5)^2 + (3-3.5)^2 +(4-3.5)^2+     (5-3.5)^2+ (6-3.5)^2 ) =2.91\]
+
+
+Wie erwartet, ist die Varianz bei fairen Würfeln deutlich geringer als bei blinden Würfeln (2,91 gegenüber 12,638).
+
+
+
+**Standardabweichung**
+
+
+\[\sigma =\sqrt{Var(Y)}=1.707\]
+
+Die Standardabweichung von faire Würfel beträgt 1.707 und von Blinder Würfel 3,5613199.
+
+
+
+
+
+
+# Wahrscheinlichkeit
+
+Insgesamt haben wir 6 Würfel,damit erhalten wir 
+\[\ 6^6 =46656\]
+mögliche Ergebnisse.
+
+
+
+P(y=0)
+
+Für die Summe 0 gibt es \[\ 5^6 =15625\] Möglichkeiten ,denn bei jedem der sechs blinden Würfel haben wir 5 Möglichkeiten für die Null.
+
+\[P(y=0)=\frac{5^6}{6^6} =0.335\]
+
+
+
+
+
+P(y=1)
+
+Für die Summe Y=1 gibt es \[\ 5^5 =3125\] Möglichkeiten.
+Der erste blinde Würfel zeigt die 1, alle anderen eine der blinden Seitenflächen.
+Analog verwenden wir diese Argumentation für Y=2 , auch gibt es genau so viele Möglichkeiten:
+
+\[P(y=1)=\frac{3125}{46656}=0.06698\]
+
+P(y=2)
+
+\[P(y=2)=\frac{3125}{46656}=0.06698\]
+
+
+
+P(y=21)
+
+Für das maximale Ergebnis Y=21 gibt es exakt eine Möglichkeit, dann ist die gesuchte Wahrscheinlichkeit.
+
+\[P(y=21)=\frac{1}{6^6}=2*10^-5\]
+
+
+
+
+
+
+# Simulation
+
+
+Wir simulieren die 6 Würfel, die die Eigenschaft von blinden Würfeln haben, das heiß, auf einer Seite eine Augenzahl und auf den anderen 5 Seiten keine Augenzahl steht .
+
+```{r}
+n_rep<-3000000
+
+
+würfel_1<- c(1,0,0,0,0,0)
+würfel_2<- c(0,2,0,0,0,0)
+würfel_3<- c(0,0,3,0,0,0)
+würfel_4<- c(0,0,0,4,0,0)
+würfel_5<- c(0,0,0,0,5,0)
+würfel_6<- c(0,0,0,0,0,6)
+
+```
+
+
+Wir würfeln immer mit diesen sechs blinden Würfeln und wiederholen das Spiel $`r n_rep `$ .
+
+Wir simulieren das Würfeln mit der Funktion ( sample ) mit einem numerischen Vektor, z.B. für X_1 zieht eine Zahl von(1,0,0,0,0,0) .
+
+```{r}
+
+  x1<-sample(würfel_1,size=n_rep,replace = TRUE)
+  x2<-sample(würfel_2,size=n_rep,replace = TRUE)
+  x3<-sample(würfel_3,size=n_rep,replace = TRUE)
+  x4<-sample(würfel_4,size=n_rep,replace = TRUE)
+  x5<-sample(würfel_5,size=n_rep,replace = TRUE)
+  x6<-sample(würfel_6,size=n_rep,replace = TRUE)
+```
+
+
+Wir sind an der Summe der Augen unserer sechs Würfel, also an der Zufallsvariable x_sum = X1 + X2 + X3 + X4 + X5 + X6, interessiert.
+```{r}
+x_sum<-x1+x2+x3+x4+x5+x6
+
+```
+
+
+
+```{r}
+y_sum<-0
+y_sum<-sum(x_sum)
+```
+Die Gesamtsumme von x_sum beträgt $`r y_sum `$ . 
+
+
+
+
+Aus mathematischen Berechnungen wissen wir, dass es für Y (die Summe der Augen unserer sechs Würfel) 22 mögliche Ergebnisse gibt.
+Nun verwenden wir die Funktion Sort(), sodass wir alle X_sum sortieren und die Duplikate löschen und am Ende das mögliche Ergebnis herausbekommen.
+
+```{r}
+y<-NA
+Y <-sort(x_sum[!duplicated(x_sum)])
+Y
+```
+Wie zu erwarten, gibt es 22 mögliche Ergebnisse für Y, nämlich von 0 bis 21.
+
+
+
+# Der Erwartungswert 
+
+Mit der Funktion mean( ) erhalten wir das arithmetische Mittel und vergleichen es dann mit dem Erwartungswert, der nach der theoretischen Berechnung herauskommt.
+
+Der Erwartungswerte beträgt 3,5.
+
+Da wir die Würfel  $`r n_rep `$ mal werfen, erwarten wir, dass der Erwartungswert und der arithmetische Mittelwert nur sehr geringe Unterschiede aufweisen.
+
+Bei einer unendlichen Anzahl von Versuchen wird das arithmetische Mittel gleich dem Erwartungswert sein.
+
+```{r}
+arithmetic_mean <- mean( x_sum)
+arithmetic_mean
+  
+
+```
+
+Der arithmetische Mittelwert beträgt `r  mean( x_sum) ` und erwartungsgemäß ist der Unterschied sehr gering und beträgt:
+$`r abs((arithmetic_mean-3.5))`$.
+
+
+
+# Varianz
+
+Die Funktion var() in der Programmiersprache R berechnet die Stichprobenvarianz eines Vektors. Sie ist das Maß dafür, wie weit der Wert vom Mittelwert entfernt ist.
+
+Wir wissen, dass die Varianz nach der Berechnung 12,638 ist. 
+
+```{r}
+var(x_sum)
+```
+
+Die Varianz beträgt nach Simulation  `r var(x_sum) ` und Die Differenz zwischen beiden Werten ist `r abs((var(x_sum)-12.683)) `.
+
+Die korrigierte Varianz beträgt `r var(x_sum)*(n_rep-1)/(n_rep-1)`.
+
+
+
+# Standardabweichung
+
+Nach der mathematischen Berechnung ergab sich eine Standardabweichung von 3,5613199.
+
+Um die Standardabweichung des Vektors mit dem Programm zu berechnen, verwenden Sie die Funktion sd().
+
+
+```{r}
+sd(x_sum)
+```
+
+
+Die Standardabweichung ergibt sich nach dem Programm `r sd(x_sum) ` und der Unterschied zwischen zwei Werten ist `r abs((sd(x_sum)-3.5613199)) `.
+
+Die korrigierte  Standardabweichung beträgt `r sd(x_sum)*(n_rep-1)/(n_rep-1)`.
+
+
+
+
+
+
+
+# Binomialverteilung
+
+
+Die Binomialverteilung gibt Wahrscheinlichkeiten für eine bestimmte Anzahl des Auftretens eines Ereignisses bei einem Bernoulliexperiment.
+
+
+Zunächst ist zu klären, ob es sich um ein Bernoullie-Experiment handelt: Es werden zwei Ereignisse definiert, das "Würfeln einer Augenzahl" und das "Würfeln der leeren Seite". Die Wahrscheinlichkeit, daß eine Zahl gewürfelt wird, ist p = 1/6, das Würfeln einer leeren Seite ist ( 1-p) = 5/6. Die Wahrscheinlichkeit ist bei jedem Wurf gleich, und die Ergebnisse der Würfe sind unabhängig voneinander, schließlich hat der Würfel kein Gedächtnis. Es handelt sich also um ein Bernoullie-Experiment.
+
+
+
+
+Die Formel:
+
+\[
+   \binom{n}{k} p^k (1-p)^{n-k}
+\]
+
+ 
+
+P(y=0)
+
+Die Wahrscheinlichkeit, daß einer leeren Seite  gewürfelt wird, ist p = 5/6, das Würfeln eine Zahl ( 1-p) = 1/6 und dann 
+müssen wir 6-elementigen Teilmengen einer 6-elementigen Menge multiplizieren.
+
+\[P(y=0)=\binom{6}{6}\frac{5^6}{6^6}.\frac{1^0}{6^0} =0.334\]
+
+```{r}
+dbinom(6,6,5/6)
+```
+
+
+
+
+P(y=1)
+
+Die Augensumme  (y=1) wird durch {1 = 1+0+0+0+0+0} erzielt.
+Die Wahrscheinlichkeit eine 1 zu würfeln,  p = 1/6, die eine 0  zu würfeln (1-p) = 5/6.
+Dann müssen wir 1-elementigen Teilmengen einer 6-elementigen Menge multiplizieren.
+
+\[P(y=1)=\binom{6}{1}\frac{1}{6}.\frac{5^5}{6^5}=0.4018\]
+
+```{r}
+dbinom(1,6,1/6)
+
+```
+
+ 
+
+
+P(y=2)
+
+Die Augensumme  (y=2) wird durch {2= 2+0+0+0+0+0} erzielt.
+Die Wahrscheinlichkeit eine 2 zu würfeln,  p = 1/6, die eine 0  zu würfeln (1-p) = 5/6. 
+
+
+\[P(y=2)=\binom{6}{1}\frac{1}{6}.\frac{5^5}{6^5}=0.4018\]
+```{r}
+dbinom(1,6,1/6)
+```
+
+Nach der Simulation stimmen P(y=2) und P(y=1) überein.
+
+
+
+
+P(y=21)
+
+Die Augensumme (y=21) , wenn man nacheinander sechs, fünf, vier, drei, zwei, eins würfelt.
+Die Wahrscheinlichkeit eine 2 zu würfeln,  p = 1/6, die eine 0  zu würfeln (1-p) = 5/6. 
+
+Dann müssen wir 6-elementigen Teilmengen einer 6-elementigen Menge multiplizieren.
+
+\[P(y=21)=\binom{6}{1}\frac{1^6}{6^6}.\frac{5^0}{6^0}=2.143e^-5\]
+
+
+```{r}
+dbinom(6,6,1/6)
+```
+
+
+
+
+
+# Diagramm Relative Häufigkeit
+
+In diesem Diagramm wollen wir die relative Häufigkeit der Augensumme für 0 bis 21 darstellen.
+```{r}
+
+tabelle<- data.frame (y_i=seq(1, n_rep, by=1))
+tabelle$y_i<-x_sum
+
+diagramm<-ggplot(tabelle) + 
+           geom_bar(mapping=aes(x=y_i ,y = ..prop..),
+                    fill="green")+ scale_x_discrete(limits=c(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21)) +  
+  labs(
+    title=" Blinder Würfel", 
+    x="X_sum", 
+    y="Relative Häufigkeit"
+  )
+
+diagramm
+
+
+
+ggsave(filename="saveExample.png", plot=diagramm
+, 
+       device="png",
+       path="images/", 
+       width=16, height=9, units="cm")
+
+
+
+
+```
+
+
+Nach dem Diagramm ist die erste Stelle der Augensumme (x_Sum=0) bei 0,334583 und die erste Stelle der Augensumme (x_Sum=6) bei 0,096.
+
+Das Diagramm zeigt, dass die relative Häufigkeit, eine 0 zu würfeln,  beträgt  0,334583 und dass im Vergleich dazu die Binomialverteilungen P(y=0)=`r dbinom(6,6,5/6)` nach
+3 Kommastellen gleich sind.
+
+ …
+
+
+
+
+```{r}
+table( x_sum)
+
+```
+
+
+# Die mittlere absolute Abweichung 
+```{r}
+mad(x_sum)
+```
+Der mittleren absoluten Abweichung beträgt `mad(x_sum)`.
+Im Gegensatz zur empirischen Varianz wird bei der mittleren absoluten Abweichung der Abstand zum (arithmetischen) Mittel nicht quadratisch gewichtet, sondern nur dem Betrage nach.
+
+
+
+
+```{r}
+quantile(x_sum)
+```
+Der Median ist ein spezielles Quantil, nämlich das 1⁄2-Quantil.
+
+
+
+
+
+
+# Median
+ 
+Für eine ordinale oder kardinale Stichprobe x_1,...x_N ist der Median ein Wert , für den mindestens 50% alle Ausprägungen x_i kleiner oder gleich x_med und mindestens
+50% aller Werte größer oder gleich x_med sind.
+
+
+Wir können in R den Median mit der Funktion median bestimmen . Diese Funktion setzt allerdings voraus , dass wir eine kardinale Skala vorliegen haben.
+
+```{r}
+median(x_sum)
+```
+Der arithmetische Mittelwert beträgt `r arithmetic_mean ` und median `r median(x_sum) `.
+Differenz zwischen beiden Werten ist `r abs(arithmetic_mean-median(x_sum)) `.
+
+
+
+
+
+
+# Diagramm empirische verteilungsfunktion und Median
+In eine grafische Darstellung der empirischen Verteilungsfunktion können wir den Median gut lokalisieren. Wir schneiden die Treppenfunktion mit der Linie y = 0,5 . Der X_Wert  des Schnittpunkts ist in der Median.
+
+
+```{r}
+tabelle$y_i<-x_sum
+
+diagramm_ecdf<-ggplot(tabelle, aes(y_i) ) +
+  stat_ecdf(lwd=1.2,geom = "step",colour="green")+
+  geom_hline(yintercept=0.5, size=0.5, color="red")
+
+diagramm_ecdf
+
+```
+
+
+
+
+
+
+
+
+
+
+
+# Literatur und Quellen
+
+https://r4ds.had.co.nz/r-markdown.html
+
+https://www.mathe-lerntipps.de/erwartungswert-in-der-statistik/
+
+https://de.wikipedia.org/wiki/Erwartungswert
+
+BEWERSDORFF, JÖRG: Glück, Logik und Bluff. Springer View-
+eg, 6. Auflage, 2012. 
+
+HALLER, RUDOLF und BARTH, FRIEDRICH: Berühmte Aufgaben der Sto-
+chastik: Von den Anfängen bis heute. De Gruyter Studium. De Gruyter,
+2016

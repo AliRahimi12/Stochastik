@@ -534,17 +534,6 @@ diagramm<-ggplot(tabelle) +
 
 diagramm
 
-
-
-ggsave(filename="saveExample.png", plot=diagramm
-, 
-       device="png",
-       path="images/", 
-       width=16, height=9, units="cm")
-
-
-
-
 ```
 
 

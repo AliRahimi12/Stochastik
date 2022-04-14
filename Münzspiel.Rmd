@@ -1,0 +1,511 @@
+---
+title: "Münzspiel"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+Autor: "Ali Abdorrahimi"\
+Studiengang: "Digital Engineering"\
+Fach: "Stochastik "\
+Semester : "Wintersemester 2022 "\
+
+
+
+![Münzspiel](/Stochastic/coin_spiel.jpg )
+
+
+# Projektbericht
+
+
+Ein Dozent spielt in seiner Vorlesung mit einer Gruppe von
+Studierenden ein Spiel mit einer Münze. Alle Studierenden zahlen 20 Cent
+Einsatz und werfen jeweils drei Münzen. Je nach Anzahl der geworfenen
+„Wappen“ zahlt der Dozent anschließend die Beträge an die Studierenden
+aus, die in der untenstehenden Tabelle angegeben.
+
+
+Wir schreiben 0 für Zahl und 1 für Wappen, dann können wir für die Variable Xi des i-ten Studierenden eine sogenannte Zählvariable verwenden. Wir definieren für das Ergebnis a1a2a3
+die Zufallsvariable
+
+
+
+   \[ Xi(a1a2a3) = a1 + a2 + a3\] 
+   
+Die Ereignismenge ist gegeben durch
+
+\[Ω = {000, 100, 010, 001, 110, 101, 011, 111}, |Ω| = 8.\] 
+
+
+
+
+
+**Die Auszahlungen für das Münzspiel des Dozenten**
+
+Wenn nach 3 Würfen nie  oder 1 Mal Wappen kommt, bekommt der Student kein Geld, wenn 2 Mal Wappen kommt, bekommt er 20 Cent zurück und wenn 3 Mal gewürfelt wird, bekommt er 100 Cent. 
+
+
+$Anzahl-Wappen \hspace{30pt}Auszahlung-Cent$
+
+$0\hspace{110pt}0$    
+
+$1\hspace{110pt}0$ 
+
+$2\hspace{110pt}20$ 
+
+$3\hspace{108pt}100$ 
+
+  
+# Load Libraries
+```{r,  warning=FALSE,include= TRUE,echo=TRUE,results='hide', message=FALSE}
+
+library(psych)
+library(modeest)
+library(ggplot2)
+library(stats)
+library(dplyr)
+```   
+
+
+
+Wir suchen eine Wahrscheinlichkeit, dass das Ergebnis von $X$ durch $x$ gegeben ist. Dafür
+schreiben wir \[P^x(x)\] Mit dieser Schreibweise deuten wir an, dass die Wahrscheinlichkeiten, die wir bestimmen, zur Zufallsvariable X gehören.
+
+wir gehen  davon aus, dass die drei Würfe der Münzen unabhängig voneinander sind, sich also nicht gegenseitig beeinflussen.
+
+
+
+$Ereignis  \hspace{70pt}Wahrscheinlichkeit$
+
+$000\hspace{110pt}P(X=0)=1/8$ 
+
+$000,010,100\hspace{70pt}P(X=1)=3/8$ 
+
+$110,101,011\hspace{70pt}P(X=2)=3/8$ 
+
+$111\hspace{110pt}P(X=3)=1/8$ 
+
+
+
+
+# Erwartungswert 
+
+
+Für die Berechnung des Erwartungswerts der Zufallsvariablen Y ,
+der Auszahlung, benötigen wir die Wahrscheinlichkeiten P(Y = y).
+Die Zufallsvariable Y beschreibt die Auszahlungen des Dozenten. Wenn wir
+den Erwartungswert von Y bestimmen erhalten wir die durchschnittliche
+Auszahlung pro Spiel, auf lange Sicht. Die folgende Tabelle zeigt die Berechnung von E(Y ). 
+
+
+
+$y[cent] \hspace{30pt}P(Y=y)$ 
+$\hspace{30pt} y.P(Y=y)$
+ 
+$0 \hspace{70pt} \frac{4}{8}$
+$\hspace{60pt}0$
+
+$20 \hspace{63pt} \frac{3}{8}$
+$\hspace{60pt}\frac{60}{8}$
+
+$100 \hspace{58pt} \frac{1}{8}$
+$\hspace{58pt}\frac{100}{8}$
+
+$Summe \hspace{40pt} 1$
+$\hspace{60pt}\frac{160}{8}=20$
+
+**Wir erhalten als Ergebnis E(Y ) = 20 Cent**
+
+
+Ist das Spiel für die Studierenden oder den Dozenten lukrativ?
+
+Dazu definieren wir eine weitere Zufallsvariable Z, die durch Z = Y −20 gegeben ist.
+Der Einsatz jedes Studierenden war auf 20 Cent festgelegt. Dann beschreibt die Zufallsvariable Z den Gewinn eines Studierenden. Und E(Z) den Gewinn
+auf lange Sicht. Mit Hilfe der Eigenschaften des Erwartungswerts können
+wir E(Z) aus E(Y ) berechnen, ohne eine weitere Tabelle mit Wahrscheinlichkeiten für Z aufzustellen:
+
+$E(Z) = E(Y − 20) = E(Y ) − 20 = 20 − 20 = 0$
+
+Das bedeutet, dass für einen Studierenden der durchschnittliche Gewinn auf
+lange Sicht 0 Cent ist. Auf jeden Fall ist der Erwartungswert von Z nicht
+negativ , das würde bedeuten, dass die Studierenden auf lange Sicht einen
+Verlust machen würden.
+
+
+#  Varianz  
+
+Weil die sechs Blinden Würfel unkorreliert(unabhängig) sind, können wir diese Formel  \[Var(X1 + X2 + . . . Xk) = Var(X1) + Var(X2) + . . . + Var(Xk)\] 
+verwenden.
+
+Für die Variable Y aus dem Münzspiel hatten  den Erwartungswert E(Y )= µY = 20 berechnet.
+
+\[
+  Var[Y] = (0−20)^2P(Y = 0)+(20−20)^2P(Y = 20)+(100−20)^2P(Y = 100) = 1000
+\]
+
+Die Varianz beträgt nach der Berechnung : 1000
+
+
+
+# Standardabweichung
+
+Die Quadratwurzel der Varianz ist das als Standardabweichung bezeichnete wichtigste Streuungsmaß in der Stochastik.
+\[\sigma =\sqrt{Var(Y)}=31,622                               \]
+
+
+
+# Prognoseintervall
+
+Wir wissen, dass die Auszahlung bei N mitspielenden Studierenden durch  $S_N = Y_1 + . . . + Y_N$
+gegeben ist.
+
+Die Yi waren paarweise unkorreliert und hatten alle den gleichen Mittelwert 20 und Standardabweichung $σ=31,6$. 
+
+Mit der Ungleichung von Tschebyscheff können wir eine Prognose über die Gesamt-Auszahlung an N Studierende aufstellen.
+
+Für N = 40 Mitspieler:
+
+$µ = 40 · 20 = 800$, $σ2 = 40 · 1000 = 4 · 10^4$, $σ = 200$.
+
+
+Das 4σ-Prognoseintervall, das mit Wahrscheinlichkeit $1- \frac{1}{16}≈ 0,94$ angenommen wird, ist durch
+
+$800 − 4 · 200 = 0 ≤ S_N ≤ 1600 = 800 + 4 · 200$
+
+gegeben. 
+Dabei sind die Angaben in Cent. Als Wahrscheinlichkeit formuliert
+erhalten wir mit der Tschebyscheff’schen Ungleichung
+
+$P(0 ≤ S40 ≤ 1 600) ≥ 1 −\frac{1}{16}≈ 0,94$.
+
+Mit einer Wahrscheinlichkeit von mindestens 94 % wird der Dozent bei 40
+Mitspielern nicht mehr als 16 Euro zahlen. Für jedes Spiel müssen die Studierenden 20 Cent Einsatz bezahlen. Dann wird der Dozent zu 94 % nicht mehr
+als 8 Euro gewinnen oder verlieren!
+
+
+
+# Simulation
+
+
+Wir simulieren das Spiel und vergleichen es mit den Werten, die wir bereits ausgerechnet haben.
+
+```{r}
+n_Studenten<-400
+
+würfel<- c(1,0)
+
+
+a1<-sample(würfel,size=n_Studenten,replace = TRUE)
+a2<-sample(würfel,size=n_Studenten,replace = TRUE)
+a3<-sample(würfel,size=n_Studenten,replace = TRUE)
+
+```
+
+
+
+Alle Studierenden zahlen 20 Cent Einsatz und werfen jeweils drei Münzen
+```{r}
+Eintritt__Cent <- n_Studenten*20
+Eintritt__Cent
+```
+Alle Studenten zahlen 20 Cent und der Gesamtpreis beträgt $`r Eintritt__Cent `$ .
+
+
+Wir sind an der Anzahl der Wappen, also an der Zufallsvariable Anzahl_Wappen = a1 + a2 + a3, interessiert.
+```{r}
+Anzahl_Wappen<-a1 + a2 + a3
+
+```
+
+
+Wir simulieren das, wenn nach 3 Würfen 2-mal Wappen kommt, bekommt der Student 20 Cent, wenn 3-mal Wappen kommt, bekommt er 100 Cent zurück.
+```{r}
+
+Auszahlung<-case_when(Anzahl_Wappen == 1 ~ 0,
+           Anzahl_Wappen == 2 ~ 20,
+          Anzahl_Wappen == 3 ~ 100,
+          TRUE ~ Anzahl_Wappen)
+```
+
+
+
+
+```{r}
+table( Anzahl_Wappen)
+```
+
+
+
+```{r}
+
+Summe_AnzahlWappen<- as.data.frame(table( Anzahl_Wappen) )
+Summe_AnzahlWappen
+```
+
+```{r}
+AnzahlWappen_0<-Summe_AnzahlWappen[1,2]
+AnzahlWappen_1<-Summe_AnzahlWappen[2,2]
+AnzahlWappen_2<-Summe_AnzahlWappen[3,2]
+AnzahlWappen_3<-Summe_AnzahlWappen[4,2]
+```
+
+Die Auszahlungen für das Münzspiel des Dozenten
+
+
+$Anzahl-Wappen \hspace{30pt}Auszahlung-Cent$
+
+$0\hspace{110pt} `r AnzahlWappen_0`$    
+
+$1\hspace{110pt}`r AnzahlWappen_1`$ 
+
+$2\hspace{110pt}`r AnzahlWappen_2`$ 
+
+$3\hspace{110pt} `r AnzahlWappen_3`$ 
+
+
+
+
+```{r}
+
+sum(Auszahlung)
+
+```
+Die Gesamtsumme von Auszahlung beträgt $`r sum(Auszahlung)`$ . 
+
+
+
+
+#  Erwartungswert
+
+
+
+**Der Erwartungswert_ Auszahlungen_Dozent**
+
+Mit der Funktion mean( ) erhalten wir das arithmetische Mittel und vergleichen es dann mit dem Erwartungswert, der nach der theoretischen Berechnung herauskommt.
+
+Der Erwartungswerte E(Y ) beträgt 20.
+
+Da wir mit $`r n_Studenten`$ Studenten spielen, erwarten wir, dass der Erwartungswert und der arithmetische Mittelwert nur sehr geringe Unterschiede aufweisen.
+
+Bei einer unendlichen Anzahl von Versuchen wird das arithmetische Mittel gleich dem Erwartungswert sein.
+
+
+
+```{r}
+arithmetic_mean <- mean(Auszahlung)
+arithmetic_mean
+```
+
+Der arithmetische Mittelwert beträgt `r  arithmetic_mean ` und erwartungsgemäß ist der Unterschied sehr gering und beträgt:
+$`r abs((arithmetic_mean-20))`$.
+
+
+
+**Der Erwartungswert_ Gewinn eines Studierenden**
+
+Jetzt wollen wir wissen, ob das Spiel für die Studenten oder für den Dozent profitabel ist?
+
+Wir haben bereits die Zufallsvariable Z definiert, die durch Z = Y -20 gegeben ist, und nach der Berechnung haben wir herausgefunden, dass für einen einzelnen Studenten der durchschnittliche Gewinn auf lange Sicht 0 Cent beträgt.
+
+$E(Z) = E(Y − 20) = E(Y ) − 20 = 20 − 20 = 0$
+
+
+
+```{r}
+studenten_gewinn<- arithmetic_mean-20
+```
+
+Jeder Student zahlt 20 Cent, um das Spiel zu starten, und der Gewinn eines Studenten ist`r  studenten_gewinn `.
+
+
+
+# Varianz
+
+Die Funktion var() in der Programmiersprache R berechnet die Stichprobenvarianz eines Vektors. Sie ist das Maß dafür, wie weit der Wert vom Mittelwert entfernt ist.
+
+Wir wissen, dass die Varianz nach der Berechnung 1000 ist. 
+
+
+
+```{r}
+var(Auszahlung)
+```
+
+Die Varianz beträgt nach Simulation  `r var(Auszahlung) ` und Die Differenz zwischen beiden Werten ist `r abs((var(Auszahlung)-1000)) `.
+
+Die korrigierte Varianz beträgt `r var(Auszahlung)*(n_Studenten-1)/(n_Studenten-1)`.
+
+
+
+
+
+# Standardabweichung
+
+Nach der mathematischen Berechnung ergab sich eine Standardabweichung von 31,62.
+
+Um die Standardabweichung des Vektors mit dem Programm zu berechnen, verwenden Sie die Funktion sd().
+
+
+```{r}
+sd(Auszahlung)
+```
+
+
+Die Standardabweichung ergibt sich nach dem Programm `r sd(Auszahlung) ` und der Unterschied zwischen zwei Werten ist `r abs((sd(Auszahlung)-31.58)) `.
+
+Die korrigierte  Standardabweichung beträgt `r sd(Auszahlung)*(n_Studenten-1)/(n_Studenten-1)`.
+
+
+
+```{r}
+table(Auszahlung)
+```
+
+# Prognoseintervall
+
+
+Für N = $`r n_Studenten`$  Mitspieler:
+
+```{r}
+erwartungswert<- n_Studenten*20
+varianz<-sqrt(n_Studenten*1000) 
+L1<-erwartungswert-4*varianz
+L2<-erwartungswert+4*varianz
+```
+
+Im schlimmsten Fall zahlt der Dozent $`r n_Studenten `$ Euro, wenn wirklich alle Mitspieler den maximalen Betrag ausgezahlt bekommen.
+Im besten Fall zahlt er gar nichts aus. Beide Fälle sind aber sehr unwahrscheinlich.
+
+Das 4σ-Prognoseintervall, das mit Wahrscheinlichkeit $1- \frac{1}{16}≈ 0,94$ angenommen wird, ist durch
+
+\[
+`r L1` ≤ S_N ≤`r L2`
+\]
+
+gegeben. Dabei sind die Angaben in Cent. Als Wahrscheinlichkeit formuliert
+erhalten wir mit der Tschebyscheff’schen Ungleichung
+
+$P(0 ≤ S40 ≤ 1 600) ≥ 1 −\frac{1}{16}≈ 0,94$.
+
+Mit einer Wahrscheinlichkeit von mindestens 94 % wird der Dozent bei $`r n_Studenten`$ Mitspielern nicht mehr als $`r L2`$ Cent zahlen. Für jedes Spiel müssen die Studierenden 20 Cent Einsatz bezahlen. Dann wird der Dozent zu 94 % nicht mehr als $`r abs( L2-Eintritt__Cent )`$ Cent nicht mehr gewinnen oder verlieren!
+
+
+```{r}
+
+```
+
+
+
+
+# Diagramm Relative Häufigkeit
+In diesem Diagramm wollen wir die relative Häufigkeit der Anzahl_Wappen darstellen.
+
+```{r}
+
+tabelle<- data.frame (y_i=seq(1, n_Studenten, by=1))
+tabelle$y_i<-Anzahl_Wappen
+
+diagramm<-ggplot(tabelle) + 
+           geom_bar(mapping=aes(x=y_i ,y = ..prop..),
+                    fill="green")+   scale_x_discrete(limits=c(0,1,2,3)) +
+  labs(
+    title=" Auszahlung von Dozent_Cent ", 
+    x="Auszahlung ", 
+    y="Relative Häufigkeit"
+  )
+
+diagramm
+
+
+```
+
+
+
+
+
+#  mittleren absoluten Abweichung
+```{r}
+mad(Auszahlung)
+```
+Der mittleren absoluten Abweichung beträgt `r mad(Auszahlung)`.
+Im Gegensatz zur empirischen Varianz wird bei der mittleren absoluten Abweichung der Abstand zum (arithmetischen) Mittel nicht quadratisch gewichtet, sondern nur dem Betrage nach.
+
+
+
+
+```{r}
+quantile(Auszahlung)
+```
+Der Median ist ein spezielles Quantil, nämlich das 1⁄2-Quantil.
+
+
+
+# Median
+ 
+Für eine ordinale oder kardinale Stichprobe x_1,...x_N ist der Median ein Wert , für den mindestens 50% alle Ausprägungen x_i kleiner oder gleich x_med und mindestens
+50% aller Werte größer oder gleich x_med sind.
+
+
+Wir können in R den Median mit der Funktion median bestimmen . Diese Funktion setzt allerdings voraus , dass wir eine kardinale Skala vorliegen haben.
+
+```{r}
+median(Auszahlung)
+```
+**Der arithmetische Mittelwert beträgt `r arithmetic_mean ` und median `r median(Auszahlung) `.
+
+
+# Diagramm empirische verteilungsfunktion und Median
+In eine grafische Darstellung der empirischen Verteilungsfunktion können wir den Median gut lokalisieren. Wir schneiden die Treppenfunktion mit der Linie y = 0,5 . Der X_Wert  des Schnittpunkts ist in der Median.
+
+
+```{r}
+tabelle$y_i<-Anzahl_Wappen
+
+diagramm_ecdf<-ggplot(tabelle, aes(Anzahl_Wappen) ) +
+  stat_ecdf(lwd=1.2,geom = "step",colour="green")+
+  geom_hline(yintercept=0.5, size=0.5, color="red")
+
+diagramm_ecdf
+
+```
+
+
+
+
+
+# Die Verteilungsfunktion der Auszahlung Y
+
+Y hat nur drei realisierbare Ergebnisse, nämlich eine Auszahlung von
+0 Cent, von 20 Cent und von 100 Cent. Wir können die Wahrscheinlichkeiten
+von Y auf die von X zurückführen.
+ 
+```{r}
+tabelle$y_i<-Auszahlung
+
+diagramm_ecdf<-ggplot(tabelle, aes(Auszahlung ) ) +
+  stat_ecdf(lwd=1.2,geom = "step",colour="green")+
+  geom_hline(yintercept=0.5, size=0.5, color="red")
+
+diagramm_ecdf
+
+
+```
+
+
+
+
+
+
+
+
+
+# Literatur und Quellen
+
+HENZE, NORBERT: Stochastik für Einsteiger: Eine Einführung in die
+faszinierende Welt des Zufalls. Vieweg+Teubner, 9. Auflage, 2011.
+
+KOCKELKORN, ULRICH: Statistik für Anwender. Springer Spektrum, 2012
+
